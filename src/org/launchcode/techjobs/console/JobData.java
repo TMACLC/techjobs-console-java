@@ -19,6 +19,8 @@ public class JobData {
     private static final String DATA_FILE = "resources/job_data.csv";
     private static Boolean isDataLoaded = false;
 
+
+
     private static ArrayList<HashMap<String, String>> allJobs;
 
     /**
@@ -33,23 +35,33 @@ public class JobData {
         // load data, if not already loaded
         loadData();
 
+
         ArrayList<String> values = new ArrayList<>();
+
 
         for (HashMap<String, String> row : allJobs) {
             String aValue = row.get(field);
+
+
 
             if (!values.contains(aValue)) {
                 values.add(aValue);
             }
         }
 
+      //Collections.sort(values);
         return values;
-    }
+      }
+
+
 
     public static ArrayList<HashMap<String, String>> findAll() {
 
         // load data, if not already loaded
         loadData();
+      //  //ArrayList<HashMap<String, String>> allJobsCopy = (ArrayList<HashMap<String, String>>)allJobs.clone();
+        //
+        //return allJobsCopy;
 
         return allJobs;
     }
@@ -65,32 +77,62 @@ public class JobData {
      * @param value Value of teh field to search for
      * @return List of all jobs matching the criteria
      */
+
     public static ArrayList<HashMap<String, String>> findByColumnAndValue(String column, String value) {
 
         // load data, if not already loaded
         loadData();
 
+
         ArrayList<HashMap<String, String>> jobs = new ArrayList<>();
+
+
+
 
         for (HashMap<String, String> row : allJobs) {
 
             String aValue = row.get(column);
+            if (aValue.toLowerCase().contains(value.toLowerCase())) {
 
-            if (aValue.contains(value)) {
+
                 jobs.add(row);
             }
-        }
 
+        }
+        return jobs;}
+
+
+
+
+
+     public static ArrayList<HashMap<String, String>> findByValue(String searchTerm) {
+
+        loadData();
+
+        ArrayList<HashMap<String, String>> jobs = new ArrayList<>();
+
+        for (HashMap<String, String> row : allJobs) {
+            for (String value : row.values()) {
+                if (value.toLowerCase().contains(searchTerm.toLowerCase())) {
+                    jobs.add(row);
+                }
+            }
+}
         return jobs;
     }
 
     /**
      * Read in data from a CSV file and store it in a list
      */
-    private static void loadData() {
+
+
+
+
+     private static void loadData() {
 
         // Only load data once
-        if (isDataLoaded) {
+        if (isDataLoaded)
+        {
             return;
         }
 
@@ -107,6 +149,7 @@ public class JobData {
 
             // Put the records into a more friendly format
             for (CSVRecord record : records) {
+
                 HashMap<String, String> newJob = new HashMap<>();
 
                 for (String headerLabel : headers) {
